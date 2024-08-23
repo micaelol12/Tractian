@@ -1,0 +1,17 @@
+.Active .header {
+  font-family: Inter;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 28px;
+  text-align: left;
+  color: #24292f;
+}
+
+.Active .subtitle {
+  color: Neutral Colors/Gray 600;
+  font-family: Inter;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  text-align: center;
+}

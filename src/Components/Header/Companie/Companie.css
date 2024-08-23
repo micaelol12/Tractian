@@ -1,0 +1,14 @@
+.Companie {
+  padding: 4px 8px;
+  background-color: #023b78;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.Companie:hover {
+  opacity: 0.8;
+}
+
+.Companie.selected {
+  background-color: #2188ff;
+}
