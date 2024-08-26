@@ -3,11 +3,11 @@ import { memo } from "react";
 import { IAsset } from "../../../model";
 import ComponentStatus from "./ComponentStatus";
 import ComponentProp from "./ComponenProp";
-interface IActivesComponentProps {
+interface IComponentProps {
   component?: IAsset;
 }
 
-const ActivesComponent: React.FC<IActivesComponentProps> = ({ component }) => {
+const Component: React.FC<IComponentProps> = ({ component }) => {
   if (!component) {
     return (
       <div
@@ -58,7 +58,7 @@ const ActivesComponent: React.FC<IActivesComponentProps> = ({ component }) => {
       >
         <div style={{ display: "flex", flexDirection: "row", gap: 20 }}>
           <div>
-            <img src="/example_image.png" />
+            <img src="/example_image.png" alt="example img" />
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
             <ComponentProp
@@ -73,12 +73,12 @@ const ActivesComponent: React.FC<IActivesComponentProps> = ({ component }) => {
           <ComponentProp
             label={"Sensor"}
             value={component.sensorId}
-            icon={<img src="./sensor.png" />}
+            icon={<img src="./sensor.png" alt="sensor icon" />}
           />
           <ComponentProp
             label={"Receptor"}
             value={component.gatewayId}
-            icon={<img src="./receptor.png" />}
+            icon={<img src="./receptor.png" alt="recpetor icon"/>}
           />
         </div>
       </div>
@@ -86,4 +86,4 @@ const ActivesComponent: React.FC<IActivesComponentProps> = ({ component }) => {
   );
 };
 
-export default memo(ActivesComponent);
+export default memo(Component);

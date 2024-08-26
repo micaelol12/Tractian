@@ -1,7 +1,8 @@
 import { memo } from "react";
+
 import ActivesMenu from "./ActivesMenu/ActivesMenu";
 import { useCompanie } from "../../Contexts/CompanieContext";
-import ActivesComponent from "./Component/ActivesComponent";
+import Component from "./Component/Component";
 
 const ActivesContent = () => {
   const { companie, component } = useCompanie();
@@ -15,7 +16,7 @@ const ActivesContent = () => {
       }}
     >
       {companie && <ActivesMenu companieId={companie.id} />}
-      <ActivesComponent component={component} />
+      <Component component={component} />
     </div>
   );
 };

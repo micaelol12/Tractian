@@ -8,9 +8,7 @@ function App() {
     <CompanieProvider>
       <div style={{ height: "100vh" }}>
         <Header />
-        <main style={{ height: "calc(100% - 48px)", overflow: "auto" }}>
-          <Actives />
-        </main>
+        <Actives />
       </div>
     </CompanieProvider>
   );
