@@ -1,7 +1,7 @@
 import { memo } from "react";
 import ActivesMenu from "./ActivesMenu/ActivesMenu";
 import { useCompanie } from "../../Contexts/CompanieContext";
-import ActivesComponent from "./ActivesMenu/Component/ActivesComponent";
+import ActivesComponent from "./Component/ActivesComponent";
 
 const ActivesContent = () => {
   const { companie, component } = useCompanie();

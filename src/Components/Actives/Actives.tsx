@@ -8,10 +8,13 @@ const Actives = () => {
       style={{
         margin: 10,
         border: "1px solid #e6ebef",
-        height: "calc(100% - 25px)",
+        height: "calc(100% - 20px)",
         backgroundColor: "white",
         borderRadius: 3,
-        padding:10
+        padding: 10,
+        display: "flex",
+        flexDirection: "column",
+        gap: 10,
       }}
     >
       <ActivesHeader />

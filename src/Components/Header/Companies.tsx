@@ -2,8 +2,7 @@ import { memo, useEffect } from "react";
 import useFetch from "../../Hooks/useFetch";
 import { getCompanies } from "../../Service/service";
 import { useCompanie } from "../../Contexts/CompanieContext";
-import Companie from "./Companie/Companie";
-import { ICompanie } from "../../model";
+import ActiveButton from "../ActiveButton/ActiveButton";
 
 const Companies = () => {
   const { data, error, loading } = useFetch({ axiosCallback: getCompanies });
@@ -18,10 +17,11 @@ const Companies = () => {
   return (
     <div style={{ display: `flex`, flexDirection: "row", gap: 10 }}>
       {data?.map((c) => (
-        <Companie
+        <ActiveButton
           key={c.id}
-          companie={c}
-          onClick={setCompanie}
+          icon={<img src="./gold.png" />}
+          label={c.name}
+          onClick={() => setCompanie(c)}
           selected={c.id === companie?.id}
         />
       ))}

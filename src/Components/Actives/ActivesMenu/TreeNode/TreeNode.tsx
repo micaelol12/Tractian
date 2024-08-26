@@ -1,8 +1,11 @@
 import { memo, useEffect, useMemo, useRef, useState } from "react";
+
 import { EType, ITreeNode } from "../ActivesMenu";
 import List from "./List";
 import { useCompanie } from "../../../../Contexts/CompanieContext";
 import { IAsset } from "../../../../model";
+import ComponentStatus from "../../Component/ComponentStatus";
+import { ReactComponent as Component } from "./../../../../Assets/Component.svg";
 
 interface ILocationProps {
   data: ITreeNode;
@@ -30,17 +33,17 @@ const TreeNode: React.FC<ILocationProps> = ({
 
   const selected = data.id === component?.id;
 
-  let src = "";
+  let src = <></>;
 
   switch (data.type) {
     case EType.ASSET:
-      src = "/asset.png";
+      src = <img src={"/asset.png"} width={20} />;
       break;
     case EType.COMPONENT:
-      src = "/component.png";
+      src = <Component color={selected ? "white" : "#2188ff"} />;
       break;
     default:
-      src = "/location.png";
+      src = <img src={"/location.png"} width={20} />;
       break;
   }
 
@@ -61,7 +64,7 @@ const TreeNode: React.FC<ILocationProps> = ({
             flexDirection: "row",
             alignItems: "center",
             gap: 5,
-            padding: "3px 0px",
+            padding: "3px 4px",
             backgroundColor: selected ? "#2188ff" : undefined,
             color: selected ? "white" : "black",
           }}
@@ -78,8 +81,11 @@ const TreeNode: React.FC<ILocationProps> = ({
               }}
             />
           )}
-          <img src={src} width={20} />
+          {src}
           <span style={{ textTransform: "uppercase" }}>{data.name}</span>
+          {isComponent && data.status && data.sensorType && (
+            <ComponentStatus status={data?.status} type={data?.sensorType} />
+          )}
         </div>
       )}
       <List data={data} margin={margin} open={open} />

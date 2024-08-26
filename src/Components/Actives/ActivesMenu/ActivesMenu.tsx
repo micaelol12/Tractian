@@ -1,7 +1,7 @@
 import { memo, useMemo } from "react";
 import useFetch from "../../../Hooks/useFetch";
 import { getAssets, getLocations } from "../../../Service/service";
-import { IAsset, ILocation } from "../../../model";
+import { ESensorType, EStatus, IAsset, ILocation } from "../../../model";
 import TreeNode from "./TreeNode/TreeNode";
 
 interface IActivesMenuProps {
@@ -20,8 +20,8 @@ export interface ITreeNode {
   parentId: string | null;
   type: EType;
   sensorId?: string | null;
-  sensorType?: string | null;
-  status?: string | null;
+  sensorType?: ESensorType | null;
+  status?: EStatus | null;
   gatewayId?: string | null;
   locationId?: string | null;
   children: ITreeNode[];
@@ -117,7 +117,7 @@ const ActivesMenu: React.FC<IActivesMenuProps> = ({ companieId }) => {
   return (
     <div
       style={{
-        height: "100%",
+        height: "calc(100% - 20px)",
         border: "1px solid #e6ebef",
         overflow: "auto",
         width: 400,
