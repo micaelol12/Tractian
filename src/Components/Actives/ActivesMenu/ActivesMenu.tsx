@@ -2,7 +2,7 @@ import { memo, useMemo } from "react";
 import useFetch from "../../../Hooks/useFetch";
 import { getAssets, getLocations } from "../../../Service/service";
 import { IAsset, ILocation } from "../../../model";
-import TreeNode from "./TreeNode";
+import TreeNode from "./TreeNode/TreeNode";
 
 interface IActivesMenuProps {
   companieId: string;
@@ -27,7 +27,7 @@ export interface ITreeNode {
   children: ITreeNode[];
 }
 
-function buildTree(locations: ILocation[], assets: IAsset[]): ITreeNode[] {
+function buildTree(locations: ILocation[], assets: IAsset[]): ITreeNode {
   const locationMap: { [key: string]: ITreeNode } = {};
   const assetMap: { [key: string]: ITreeNode } = {};
 
@@ -82,7 +82,13 @@ function buildTree(locations: ILocation[], assets: IAsset[]): ITreeNode[] {
   rootNodes.push(...unlinkedAssets);
 
   // Retornar um único nó raiz que representa toda a árvore
-  return rootNodes;
+  return {
+    name: "ROOT",
+    id: "ROOT",
+    children: rootNodes,
+    parentId: null,
+    type: EType.LOCATION,
+  };
 }
 
 const ActivesMenu: React.FC<IActivesMenuProps> = ({ companieId }) => {
@@ -101,18 +107,24 @@ const ActivesMenu: React.FC<IActivesMenuProps> = ({ companieId }) => {
     params: companieId,
   });
 
-  const parents = useMemo(
+  const Tree = useMemo(
     () => (assets && locations ? buildTree(locations, assets) : undefined),
     [assets, locations]
   );
 
   //Ver de renderizar so o que aparece na tela
-  
+
   return (
-    <div style={{ height: "100%", overflow: "auto" }}>
-      {parents?.map((d) => (
-        <TreeNode key={d.id} data={d} />
-      ))}
+    <div
+      style={{
+        height: "100%",
+        border: "1px solid #e6ebef",
+        overflow: "auto",
+        width: 400,
+        padding: 10,
+      }}
+    >
+      {Tree && <TreeNode key={Tree.id} data={Tree} root={true} margin={-10} />}
     </div>
   );
 };

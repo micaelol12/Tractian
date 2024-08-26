@@ -1,9 +1,11 @@
 import { createContext, useContext, useState } from "react";
-import { ICompanie } from "../model";
+import { IAsset, ICompanie } from "../model";
 
 interface ICompanieContext {
   companie?: ICompanie;
   setCompanie: (c: ICompanie) => void;
+  component?: IAsset;
+  setComponent: (c: IAsset) => void;
 }
 
 interface ICompanieProviderProps {
@@ -12,20 +14,26 @@ interface ICompanieProviderProps {
 
 const CompanieContext = createContext<ICompanieContext | undefined>(undefined);
 
-export const CompanieProvider: React.FC<ICompanieProviderProps> = ({ children }) => {
+export const CompanieProvider: React.FC<ICompanieProviderProps> = ({
+  children,
+}) => {
   const [companie, setCompanie] = useState<ICompanie>();
+  const [component, setComponent] = useState<IAsset>();
 
   return (
-    <CompanieContext.Provider value={{ companie, setCompanie }}>
+    <CompanieContext.Provider
+      value={{ companie, setCompanie, component, setComponent }}
+    >
       {children}
     </CompanieContext.Provider>
   );
 };
 
 export const useCompanie = () => {
-  const context = useContext(CompanieContext)
+  const context = useContext(CompanieContext);
 
-  if(context === undefined) throw new Error("useCompani must be used with CompanieProvider")
+  if (context === undefined)
+    throw new Error("useCompani must be used with CompanieProvider");
 
-    return context
-}
+  return context;
+};

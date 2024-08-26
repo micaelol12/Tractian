@@ -1,7 +1,6 @@
 import { memo } from "react";
 import ActivesHeader from "./ActivesHeader";
 import ActivesContent from "./ActivesContent";
-import { useCompanie } from "../../Contexts/CompanieContext";
 
 const Actives = () => {
   return (
@@ -12,6 +11,7 @@ const Actives = () => {
         height: "calc(100% - 25px)",
         backgroundColor: "white",
         borderRadius: 3,
+        padding:10
       }}
     >
       <ActivesHeader />

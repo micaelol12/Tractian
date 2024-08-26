@@ -1,9 +1,10 @@
 import { memo } from "react";
 import ActivesMenu from "./ActivesMenu/ActivesMenu";
 import { useCompanie } from "../../Contexts/CompanieContext";
+import ActivesComponent from "./ActivesMenu/Component/ActivesComponent";
 
 const ActivesContent = () => {
-  const { companie } = useCompanie();
+  const { companie, component } = useCompanie();
 
   return (
     <div
@@ -14,7 +15,7 @@ const ActivesContent = () => {
       }}
     >
       {companie && <ActivesMenu companieId={companie.id} />}
-      <div>conteudo</div>
+      {component && <ActivesComponent component={component} />}
     </div>
   );
 };
