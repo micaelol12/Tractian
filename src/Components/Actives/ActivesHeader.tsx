@@ -2,17 +2,34 @@ import "./Actives.css";
 import { memo } from "react";
 import { useCompanie } from "../../Contexts/CompanieContext";
 import ActiveButton from "../ActiveButton/ActiveButton";
-import { ReactComponent as Exclamation } from './../../Assets/ExclamationCircle.svg';
-import { ReactComponent as Thunder } from './../../Assets/Thunderbolt.svg';
+import { ReactComponent as Exclamation } from "./../../Assets/ExclamationCircle.svg";
+import { ReactComponent as Thunder } from "./../../Assets/Thunderbolt.svg";
 
 import { ESensorType, EStatus } from "../../model";
 
 const ActivesHeader: React.FC = () => {
-  const { companie, component } = useCompanie();
+  const { companie, sensorType, setSensorType, status, setStatus } =
+    useCompanie();
 
-  const isEnergySensor = component?.sensorType === ESensorType.ENERGY;
+  const isEnergySensor = sensorType === ESensorType.ENERGY;
 
-  const isCritict = component?.status === EStatus.ALERT;
+  const isCritict = status === EStatus.ALERT;
+
+  const onEnergyClickHandler = () => {
+    if (isEnergySensor) {
+      setSensorType(undefined);
+    } else {
+      setSensorType(ESensorType.ENERGY);
+    }
+  };
+
+  const onStatusClickHandler = () => {
+    if (status) {
+      setStatus(undefined);
+    } else {
+      setStatus(EStatus.ALERT);
+    }
+  };
 
   return (
     <div
@@ -31,13 +48,15 @@ const ActivesHeader: React.FC = () => {
         <ActiveButton
           selected={isEnergySensor}
           label="Sensor de energia"
-          icon={<Thunder color={isEnergySensor? "white" : "#2188ff"}/>}
+          onClick={onEnergyClickHandler}
+          icon={<Thunder color={isEnergySensor ? "white" : "#2188ff"} />}
           disable={!isEnergySensor}
         />
         <ActiveButton
           selected={isCritict}
           label="Crítico"
-          icon={<Exclamation color={isCritict? "white" : "#2188ff"}/>}
+          onClick={onStatusClickHandler}
+          icon={<Exclamation color={isCritict ? "white" : "#2188ff"} />}
           disable={!isCritict}
         />
       </div>

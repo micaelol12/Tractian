@@ -3,6 +3,7 @@ import useFetch from "../../../Hooks/useFetch";
 import { getAssets, getLocations } from "../../../Service/service";
 import { ESensorType, EStatus, IAsset, ILocation } from "../../../model";
 import TreeNode from "./TreeNode/TreeNode";
+import { useCompanie } from "../../../Contexts/CompanieContext";
 
 interface IActivesMenuProps {
   companieId: string;
@@ -25,6 +26,56 @@ export interface ITreeNode {
   gatewayId?: string | null;
   locationId?: string | null;
   children: ITreeNode[];
+}
+
+function filterTreeByStatus(
+  node: ITreeNode,
+  status?: EStatus,
+  type?: ESensorType
+): ITreeNode | null {
+  if (!status && !type) {
+    return node;
+  }
+
+  // Filtrar os filhos primeiro
+  const filteredChildren = node.children
+    .map((child) => filterTreeByStatus(child, status,type)) // Aplicar o filtro recursivamente
+    .filter((child) => child !== null) as ITreeNode[]; // Remover nós nulos
+
+  // Verifica se o nó atual ou algum dos seus filhos tem o status desejado
+  if (status && !type) {
+    if (node.status === status || filteredChildren.length > 0) {
+      return {
+        ...node,
+        children: filteredChildren,
+      };
+    }
+  }
+
+  if (type && !status) {
+    if (type === node.sensorType || filteredChildren.length > 0) {
+      return {
+        ...node,
+        children: filteredChildren,
+      };
+    }
+  }
+
+  if (type && status) {
+    if (
+      type === node.sensorType ||
+      node.status === status ||
+      filteredChildren.length > 0
+    ) {
+      return {
+        ...node,
+        children: filteredChildren,
+      };
+    }
+  }
+
+  // Se o nó não tem o status desejado e não tem filhos correspondentes, retorna null
+  return null;
 }
 
 function buildTree(locations: ILocation[], assets: IAsset[]): ITreeNode {
@@ -59,8 +110,10 @@ function buildTree(locations: ILocation[], assets: IAsset[]): ITreeNode {
       status: asset.status,
       gatewayId: asset.gatewayId,
       parentId: asset.parentId,
+      locationId: asset.locationId,
       children: [],
     };
+
     assetMap[asset.id] = node;
 
     if (asset.locationId) {
@@ -71,14 +124,17 @@ function buildTree(locations: ILocation[], assets: IAsset[]): ITreeNode {
   });
 
   // Passo 3: Identificar os nós raiz (localizações sem um pai)
-  const rootNodes: ITreeNode[] = Object.values(locationMap).filter(
+  let rootNodes: ITreeNode[] = Object.values(locationMap).filter(
     (location) => !location.parentId
   );
+
+  console.log("das", Object.values(assetMap));
 
   // Adicionar qualquer asset ou componente desvinculado à raiz (assets sem locationId ou parentId)
   const unlinkedAssets = Object.values(assetMap).filter(
     (asset) => !asset.locationId && !asset.parentId
   );
+
   rootNodes.push(...unlinkedAssets);
 
   // Retornar um único nó raiz que representa toda a árvore
@@ -92,6 +148,7 @@ function buildTree(locations: ILocation[], assets: IAsset[]): ITreeNode {
 }
 
 const ActivesMenu: React.FC<IActivesMenuProps> = ({ companieId }) => {
+  const { sensorType, status } = useCompanie();
   // TODO juntas as duas requisições no axios
   const {
     data: locations,
@@ -107,12 +164,14 @@ const ActivesMenu: React.FC<IActivesMenuProps> = ({ companieId }) => {
     params: companieId,
   });
 
-  const Tree = useMemo(
+  const tree = useMemo(
     () => (assets && locations ? buildTree(locations, assets) : undefined),
     [assets, locations]
   );
 
-  //Ver de renderizar so o que aparece na tela
+  const filtered = tree
+    ? filterTreeByStatus(tree, status, sensorType)
+    : undefined;
 
   return (
     <div
@@ -124,7 +183,9 @@ const ActivesMenu: React.FC<IActivesMenuProps> = ({ companieId }) => {
         padding: 10,
       }}
     >
-      {Tree && <TreeNode key={Tree.id} data={Tree} root={true} margin={-10} />}
+      {filtered && (
+        <TreeNode key={filtered.id} data={filtered} root={true} margin={-10} />
+      )}
     </div>
   );
 };
