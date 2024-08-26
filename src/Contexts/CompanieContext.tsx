@@ -2,14 +2,16 @@ import { createContext, useContext, useState } from "react";
 import { ESensorType, EStatus, IAsset, ICompanie } from "../model";
 
 interface ICompanieContext {
-  setComponent: (c: IAsset) => void;
+  setComponent: (c?: IAsset) => void;
   setCompanie: (c: ICompanie) => void;
   setSensorType: (t?: ESensorType) => void;
   setStatus: (t?: EStatus) => void;
+  setSearch: (v: string) => void;
   companie?: ICompanie;
   component?: IAsset;
   status: EStatus | undefined;
   sensorType: ESensorType | undefined;
+  search: string;
 }
 
 interface ICompanieProviderProps {
@@ -25,6 +27,7 @@ export const CompanieProvider: React.FC<ICompanieProviderProps> = ({
   const [component, setComponent] = useState<IAsset>();
   const [sensorType, setSensorType] = useState<ESensorType>();
   const [status, setStatus] = useState<EStatus>();
+  const [search, setSearch] = useState("");
 
   return (
     <CompanieContext.Provider
@@ -35,6 +38,8 @@ export const CompanieProvider: React.FC<ICompanieProviderProps> = ({
         setComponent,
         setSensorType,
         setStatus,
+        search,
+        setSearch,
         status,
         sensorType,
       }}

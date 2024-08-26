@@ -4,10 +4,26 @@ import { IAsset } from "../../../model";
 import ComponentStatus from "./ComponentStatus";
 import ComponentProp from "./ComponenProp";
 interface IActivesComponentProps {
-  component: IAsset;
+  component?: IAsset;
 }
 
 const ActivesComponent: React.FC<IActivesComponentProps> = ({ component }) => {
+  if (!component) {
+    return (
+      <div
+        style={{
+          border: "1px solid #e6ebef",
+          height: "100%",
+          width: "calc(100% - 410px)",
+          marginLeft: 10,
+          padding: 10,
+        }}
+      >
+        <h4>Nenhum componente selecionado!</h4>
+      </div>
+    );
+  }
+
   return (
     <div
       style={{
@@ -27,7 +43,10 @@ const ActivesComponent: React.FC<IActivesComponentProps> = ({ component }) => {
         }}
       >
         <h2>{component.name}</h2>
-        <ComponentStatus status={component.status} type={component.sensorType} />
+        <ComponentStatus
+          status={component.status}
+          type={component.sensorType}
+        />
       </div>
       <div
         style={{

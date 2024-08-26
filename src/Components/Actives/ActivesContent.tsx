@@ -15,7 +15,7 @@ const ActivesContent = () => {
       }}
     >
       {companie && <ActivesMenu companieId={companie.id} />}
-      {component && <ActivesComponent component={component} />}
+      <ActivesComponent component={component} />
     </div>
   );
 };

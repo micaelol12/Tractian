@@ -1,12 +1,13 @@
 import { memo, useEffect } from "react";
+
 import useFetch from "../../Hooks/useFetch";
 import { getCompanies } from "../../Service/service";
 import { useCompanie } from "../../Contexts/CompanieContext";
 import ActiveButton from "../ActiveButton/ActiveButton";
 
 const Companies = () => {
-  const { data, error, loading } = useFetch({ axiosCallback: getCompanies });
-  const { setCompanie, companie } = useCompanie();
+  const { data } = useFetch({ axiosCallback: getCompanies });
+  const { setCompanie, companie, setComponent } = useCompanie();
 
   useEffect(() => {
     if (data) {
@@ -19,9 +20,12 @@ const Companies = () => {
       {data?.map((c) => (
         <ActiveButton
           key={c.id}
-          icon={<img src="./gold.png" />}
+          icon={<img src="./gold.png" alt="a gold bar icon" />}
           label={c.name}
-          onClick={() => setCompanie(c)}
+          onClick={() => {
+            setCompanie(c);
+            setComponent(undefined);
+          }}
           selected={c.id === companie?.id}
         />
       ))}

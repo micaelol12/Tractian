@@ -8,7 +8,7 @@ const Actives = () => {
       style={{
         margin: 10,
         border: "1px solid #e6ebef",
-        height: "calc(100% - 20px)",
+        height: "calc(100% - 45px)",
         backgroundColor: "white",
         borderRadius: 3,
         padding: 10,
